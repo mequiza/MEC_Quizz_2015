@@ -5,6 +5,10 @@
   "scripts": {
     "start": "nodejs ./bin/www"
   },
+  "engines": {
+    "nodejs": "0.10.25",
+    "npm": "1.4.21"
+  },
   "dependencies": {
     "body-parser": "~1.0.0",
     "cookie-parser": "~1.0.1",
