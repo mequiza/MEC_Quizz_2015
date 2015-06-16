@@ -1,6 +1,6 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
+  "name": "Ejercicio Quiz",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "start": "nodejs ./bin/www"
