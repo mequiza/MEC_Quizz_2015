@@ -5,7 +5,7 @@ body                  { font: 16px Georgia, serif; }
 #page-wrap > .main    { border: 1px solid #999; padding: 1%;
                         margin-bottom: 1px; color: black;}
 section > div         { padding: 20px;}
-header, nav, section  { background: #eee none repeat scroll 0 0; text-align: center;}
+header, nav, section  { background: #eee; text-align: center;}
 footer                { background: #eee; text-align: center;}
 footer a:link         { margin: display: inline-block;
                         padding: 0px 20px 0px 0px;}
