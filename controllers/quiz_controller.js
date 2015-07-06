@@ -13,20 +13,6 @@ exports.load = function(req, res, next, quizId) {
 };
 
  // GET /quizes
-/*exports.index = function(req, res) {
-  
-  var resultado = req.query.search;
-  if (resultado){
-  resultado = replaceAll(resultado,' ','%');
-  }
-
-  models.Quiz.findAll(resultado ? {where: ["pregunta like ?", '%' + resultado + '%'], order: 'pregunta ASC'} : {}).then(
-    function(quizes) {
-      res.render('quizes/index.ejs', {quizes: quizes, errors: []});
-    }
-  ).catch(function(error) {next(error)});
-};
-*/
 exports.index = function(req, res) {
 if(req.query.search) {
 var filtro = (req.query.search || '').replace(" ", "%");
@@ -49,6 +35,24 @@ exports.show = function(req, res){
   res.render('quizes/show', {quiz: req.quiz});
 };
 
+ // GET /quizes/new
+exports.new = function(req, res){
+  var quiz = models.Quiz.build(
+    {pregunta: 'Pregunta', respuesta: 'Respuesta'}
+  );
+  res.render('quizes/new', {quiz: quiz});
+};
+
+ // POST /quizes/create
+ exports.create = function(req, res){
+  var quiz = models.Quiz.build(req.body.quiz);
+
+ // Guarda en DB pregunta y respuesta
+ quiz.save({fields: ['pregunta', 'respuesta']}).then(function(){
+  res.redirect('/quizes');
+ })
+ };
+ 
  // GET /quizes/:id/answer
 exports.answer = function(req, res){
 var resultado = 'Incorrecto';
