@@ -74,3 +74,35 @@ exports.create = function(req, res) {
     }
   ).catch(function(error){next(error)});
 };
+
+// GET /quizes/:id/edit
+exports.edit = function(req, res){
+  var quiz = req.quiz; // autocarga la instancia de quiz
+  res.render('quizes/edit', {quiz: quiz, errors: []});
+};
+
+//PUT /quizes/:id
+exports.update = function(req, res){
+  req.quiz.pregunta = req.body.quiz.pregunta;
+  req.quiz.respuesta = req.body.quiz.respuesta;
+
+  req.quiz
+    .validate()
+    .then(
+      function(err){ //// valida las entradas
+        if (err) {
+          res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});// gestiona los mensajes de error
+        } else {
+          req.quiz
+          .save({fields: ["pregunta", "respuesta"]})// guarda la entrada en DB
+          .then( function(){ res.redirect('/quizes')}) // redirige a lista de preguntas
+        }
+      }
+    ).catch(function(error){next(error)});
+};
+// DELETE /quizes/:id
+exports.destroy = function(req, res){
+  req.quiz.destroy().then ( function(){
+    res.redirect('/quizes');
+  }).catch(function(error){next(eror)});
+};
