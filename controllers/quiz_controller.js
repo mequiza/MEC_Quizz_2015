@@ -51,7 +51,7 @@ var resultado = 'Incorrecto';
  // GET /quizes/new
 exports.new = function(req, res){
   var quiz = models.Quiz.build(
-    {pregunta: 'Pregunta', respuesta: 'Respuesta'}
+    {pregunta: 'Pregunta', respuesta: 'Respuesta', tematica: 'Tematica'}
   );
   res.render('quizes/new', {quiz: quiz, errors: []});
 };
@@ -68,7 +68,7 @@ exports.create = function(req, res) {
         res.render('quizes/new', {quiz: quiz, errors: err.errors});// gestiona los mensajes de error
       } else {
         quiz
-        .save({fields: ["pregunta", "respuesta"]})// guarda la entrada en DB
+        .save({fields: ["pregunta", "respuesta", 'tematica']})// guarda la entrada en DB
         .then( function(){ res.redirect('/quizes')}) // redirige a lista de preguntas
       }
     }
@@ -85,6 +85,7 @@ exports.edit = function(req, res){
 exports.update = function(req, res){
   req.quiz.pregunta = req.body.quiz.pregunta;
   req.quiz.respuesta = req.body.quiz.respuesta;
+  req.quiz.tematica = req.body.quiz.tematica;
 
   req.quiz
     .validate()
@@ -94,7 +95,7 @@ exports.update = function(req, res){
           res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});// gestiona los mensajes de error
         } else {
           req.quiz
-          .save({fields: ["pregunta", "respuesta"]})// guarda la entrada en DB
+          .save({fields: ["pregunta", "respuesta", "tematica"]})// guarda la entrada en DB
           .then( function(){ res.redirect('/quizes')}) // redirige a lista de preguntas
         }
       }
