@@ -6,14 +6,28 @@
  <link rel='stylesheet' type='text/css' href="/stylesheets/style.css"/>
  <link rel='stylesheet' type='text/css'  media='only screen and (min-width: 530px) and (min-device-width: 481px)' href="/stylesheets/wide.css"/>
  <link rel='stylesheet' type='text/css'  media='only screen and (max-width: 480px)' href="/stylesheets/smartphone.css"/>
+ <!--  autoLogout J I G Palacios-->
+ <% if(session.user){ %>
+   <script type="text/javascript">
+       var plazo=<%= session.plazo %>;
+       function crono(){
+          if(plazo<0){
+         	 pl.innerHTML = '';
+         	 log.href='/login';
+          }
+       }
+ <% } %>
+
+    </script>
+<!-- Fin autologout -->
  </head>
- <body>
+ <body <% if(session.user){ %> onload="crono();setInterval(crono, 1000);" <% } %>
  <div id='page-wrap'>
  <header class="main" id="h1">
   <%if(!session.user){%>
     <span class="right"><a href="/login">Login</a></span>
   <%}else{%>
-    <span class="right"> <%=session.user.username%> <a href="/logout">Logout</a></span>
+    <span class="right"> <%=session.user.username%>: <a href="/logout">Logout</a></span>
   <%}%>
 
   <h2>Quiz<span>: el juego de las preguntas</span></h2>
@@ -22,6 +36,7 @@
  <nav class="main" id="n1" role="navigation">
    <span><a href="/">Inicio</a></span>
    <span><a href="/quizes">Preguntas</a></span>
+   <span><a href="/quizes/statistics">Estado</a></span>
    <span><a href="/author">Créditos</a></span>
  </nav>
 

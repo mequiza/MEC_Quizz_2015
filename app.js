@@ -25,6 +25,7 @@ app.use(cookieParser('Quiz MEC'));
 app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
 // Helpers dinámicos:
 app.use(function(req, res, next) {
   // Guardar path en session.redir para después de login
@@ -34,6 +35,28 @@ app.use(function(req, res, next) {
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
+});
+
+// MW auto-logout por tiempo de sesion. Necesaria una sesion activa
+app.use(function(req, res, next) {
+    if(req.session.user){
+    	if(!req.session.lasttransaction){
+        // primera marca de tiempo de sesión
+    		req.session.lasttransaction=(new Date().getTime());
+            // tiempo de duración control caducidad de la sesion
+            req.session.new = 120;
+    	}else{
+    		if((new Date().getTime()) - req.session.lasttransaction > 120000){
+    			delete req.session.user; 	
+    			delete req.session.lasttransaction;	
+    		}else{
+            // actualizar nuevos controles tiempo de caducidad
+    			req.session.lasttransaction=(new Date().getTime());
+    			req.session.new=120;
+    		}
+    	}
+    }
+    next();
 });
 
 app.use('/', routes);

@@ -32,7 +32,7 @@ exports.index = function(req, res) {
   }
 };
 
-//GET /quizes/:id
+// GET /quizes/:id
 exports.show = function(req, res){
   res.render('quizes/show', {quiz: req.quiz, errors: []});
 };
@@ -62,7 +62,8 @@ exports.create = function(req, res) {
   quiz
   .validate()
   .then(
-    function(err){ //// valida las entradas
+    function(err){ 
+    // valida las entradas
       if (err) {
         res.render('quizes/new', {quiz: quiz, errors: err.errors});// gestiona los mensajes de error
       } else {
