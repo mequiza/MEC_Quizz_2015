@@ -41,6 +41,7 @@ exports.Quiz = Quiz; // exportar definición de tabla Quiz
 exports.Comment = Comment;
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
+exports.sequelize = sequelize;	//Se exporta BD para estadísticas.
 sequelize.sync().then(function() {
     Quiz.count().then(function(count){
         if (count === 0) {
