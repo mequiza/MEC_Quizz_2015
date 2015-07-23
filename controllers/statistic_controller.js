@@ -46,20 +46,3 @@ exports.show = function(req, res) {
    })
    .catch(function (err) { errors.push(err); })
 };
-
-
-/*.then (function(c) {
-  models.Quiz.count({where: '"Comments"."QuizId" IS NULL', include: [{ model: models.Comment}]})
-  .on ('success', function(cuenta){  // devuelve el número de PREGUNTAS CON COMENTARIO
-    estadistica.quizzesNoComment[1] = cuenta;
-    estadistica.quizzesComment[1] = (estadistica.quizzesTot[1] - estadistica.quizzesNoComment[1]);
-    if ( (estadistica.quizzesTot[1] > 0)  && (estadistica.commentsTot[1] > 0) ) {
-      estadistica.commentsAverage[1] = (estadistica.commentsTot[1] / estadistica.quizzesTot[1]).toFixed(3);
-    }
-    estadistica.commentsNoPub[1] = estadistica.commentsTot[1] - estadistica.commentsPub[1];
- })
-.then( function(c) {
- res.render('statistic/show', { estadistica: estadistica, errors: []})
-})
-})
-*/
