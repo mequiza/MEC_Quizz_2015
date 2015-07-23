@@ -13,7 +13,7 @@ exports.show = function(req, res) {
     commentsAverage2 : []
   }
 
-  // Chequea en cada pregunta todos los comentarios, publicados ó no publicados
+  // Chequea en cada pregunta todos los comentarios, publicados ó no
   models.Quiz.count()
   .on ('success', function(quizzesCount){  // Total de preguntas
     estadistica.quizzesTot[1] = quizzesCount;})
@@ -27,7 +27,7 @@ exports.show = function(req, res) {
             estadistica.commentsPub[1] = Publihs;})
             .then (function() {
               models.Quiz.count({where: '"Comments"."QuizId" IS NULL', include: [{ model: models.Comment}]})
-              .on ('success', function(noComment){  // devuelve el número de PREGUNTAS CON COMENTARIO
+              .on ('success', function(noComment){  // devuelve el número de Preguntas con comentarios
                 estadistica.quizzesNoComment[1] = noComment;
                 estadistica.quizzesComment[1] = (estadistica.quizzesTot[1] - estadistica.quizzesNoComment[1]);
                 if ( (estadistica.quizzesTot[1] > 0)  && (estadistica.commentsTot[1] > 0) ) {
