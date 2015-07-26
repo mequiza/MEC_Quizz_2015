@@ -4,11 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var partials = require('express-partials');
-var methodOverride = require('method-override');
-var session = require('express-session');
+var methodOverride=require("method-override");
+var session=require("express-session");
+
 var routes = require('./routes/index');
-// var users = require('./routes/users');
+
+var partials = require("express-partials");
 
 var app = express();
 
@@ -17,59 +18,38 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(partials());
+
+// uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser('Quiz MEC'));
+app.use(bodyParser.urlencoded());
+app.use(cookieParser("Quiz 2015"));
 app.use(session());
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Helpers dinámicos:
 app.use(function(req, res, next) {
-  // Guardar path en session.redir para después de login
-  if (!req.path.match(/\/login|\/logout/)) {
-    req.session.redir = req.path;
-  }
-  // Hacer visible req.session en las vistas
-  res.locals.session = req.session;
-  next();
-});
-
-// MW auto-logout por tiempo de sesion. Necesaria una sesion activa
-app.use(function(req, res, next) {
-    if(req.session.user){
-    	if(!req.session.lasttransaction){
-        // primera marca de tiempo de sesión
-    		req.session.lasttransaction=(new Date().getTime());
-            // tiempo de duración control caducidad de la sesion
-            req.session.new = 120;
-    	}else{
-    		if((new Date().getTime()) - req.session.lasttransaction > 120000){
-    			delete req.session.user; 	
-    			delete req.session.lasttransaction;	
-    		}else{
-            // actualizar nuevos controles tiempo de caducidad
-    			req.session.lasttransaction=(new Date().getTime());
-    			req.session.new=120;
-    		}
-    	}
+    // Guardar path en session.redir para poder redireccionar
+    if(!req.path.match(/\/login|\/logout|\/user|\/user|\/:userId(\\d+)|\/:userId(\\d+)\/edit/)) {
+        req.session.redir=req.path;
     }
+    // Hacer visible req.session en las vistas
+    res.locals.session=req.session;
     next();
 });
 
 app.use('/', routes);
-// app.use('/users', users);
 
-/// catch 404 and forwarding to error handler
+// catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
-/// error handlers
+// error handlers
 
 // development error handler
 // will print stacktrace
@@ -80,6 +60,7 @@ if (app.get('env') === 'development') {
             message: err.message,
             error: err,
             errors: []
+
         });
     });
 }

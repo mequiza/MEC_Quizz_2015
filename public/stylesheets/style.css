@@ -1,8 +1,8 @@
 *                     { margin: 0; padding: 0; }
-body                  { font: 16px Georgia, serif; }
+body                  { padding: 50px; font: 16px Georgia, serif; }
 
 #page-wrap            { margin: 2% auto; color: white;}
-#page-wrap > .main    { border: 1px solid #999; padding: 1%;
+#page-wrap > .main    { border: 2px solid #999; padding: 1%;
                         margin-bottom: 1px; color: black;}
 section > div         { padding: 20px;}
 header, nav, section  { background: #eee; text-align: center;}
@@ -10,4 +10,8 @@ footer                { background: #eee; text-align: center;}
 footer a:link         { margin: display: inline-block;
                         padding: 0px 20px 0px 0px;}
 nav span              { margin: 0px 10px 0px 0px;}
+#busquedas            { width: 80%;}
+#respuesta            {	width: 30%;}
 #ErrorMsgs            { color: #f61; font-size: smaler}
+.right                {	float:right;}
+.quiz_img             {	float: left; height: 150px;}
