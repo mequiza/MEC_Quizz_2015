@@ -19,14 +19,14 @@
         <%}%>
         <h2>Quiz<span>: el juego de las preguntas</span></h2>
       </header>
-      <nav class="main" id="n1">
-        <span><a href="/">Inicio</a></span>
-        <span><a href="/quizes">Preguntas</a></span>
-        <span><a href="/author">Autor</a></span>
-        <span><a href="/quizes/statistics">Estadísticas</a></span>
+      <nav class="main" id="n1" align="left">
+        <span align="left"><a href="/">Inicio</a></span>
+        <span align="left"><a href="/quizes">Preguntas</a></span>
+        <span align="left"><a href="/author">Autor</a></span>
+        <span align="left"><a href="/quizes/statistics">Estadísticas</a></span>
         <%if(session.user){%>
-          <span><a href="/user/<%=session.user.id%>/quizes">Mis Preguntas</a></span>
-          <span><a href="/user/<%=session.user.id%>/favourites">Favoritos</a></span>
+          <span align="left"><a href="/user/<%=session.user.id%>/quizes">Mis&nbsp;Preguntas</a></span>
+          <span align="left"><a href="/user/<%=session.user.id%>/favourites">Favoritos</a></span>
         <%}%>
         <span>
           <form method='get' action='/quizes'>

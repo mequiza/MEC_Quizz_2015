@@ -31,7 +31,7 @@ var Comment=sequelize.import(path.join(__dirname, "comment"));
 // Importar la definición de la tabla User en user.js
 var User=sequelize.import(path.join(__dirname, "user"));
 
-Comment.belongsTo(Quiz);
+Comment.belongsTo(Quiz, { onDelete: 'cascade' });
 Quiz.hasMany(Comment);
 
 // los quizes pertenecen a un usuario registrado
@@ -58,7 +58,7 @@ sequelize.sync().then(function() {
 				{username:"pepe", password:"5678"}
 				]
 			).then(function() {
-				console.log("Base datos, tabla user inicializada");
+				console.log("Base datos, (tabla user) inicializada");
 				Quiz.count().then(function (count) {
 					if (count===0) { // si esta vacía se inicializa
 						Quiz.create({ pregunta: "Capital de Italia",

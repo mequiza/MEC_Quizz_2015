@@ -9,7 +9,9 @@ header, nav, section  { background: #eee; text-align: center;}
 footer                { background: #eee; text-align: center;}
 footer a:link         { margin: display: inline-block;
                         padding: 0px 20px 0px 0px;}
-nav span              { margin: 0px 10px 0px 0px;}
+nav span              { margin: 0px 10px 0px 0px;
+                        width: 100%;
+                        display: inline-block;}
 #busquedas            { width: 80%;}
 #respuesta            {	width: 30%;}
 #ErrorMsgs            { color: #f61; font-size: smaler}

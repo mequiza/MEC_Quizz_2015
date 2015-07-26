@@ -6,12 +6,12 @@ var user = {
 		isAdmin: "true"
   };
 
-// Autoload
+// Autoload :userId
 exports.load=function(req, res, next, userId) {
 	models.User.find({where: {id: Number(userId)}})
 		.then(function(user){
 			if(user) {
-				req.user=user;
+				req.user = user;
 				next();
 			} else {
 				next(new Error("No existe userId= "+userId));
@@ -21,7 +21,7 @@ exports.load=function(req, res, next, userId) {
 
 // Comprueba si el usuario está registrado en users
 // Si autenticación falla o hay errores se ejecuta callback(error)
-exports.autenticar=function(login, password, callback) {
+exports.autenticar = function(login, password, callback) {
 	models.User.find({where: {username:login}
 	}).then(function(user){
 		if(user) {
@@ -35,7 +35,7 @@ exports.autenticar=function(login, password, callback) {
 
 // GET /user
 exports.new=function(req, res) {
-	var user=models.User.build(
+	var user=models.User.build( // crea objeto user
 		{username: "", password: ""});
 	res.render("users/new", {user: user, redir:req.session.redir.toString(), errors: []});
 };
@@ -47,8 +47,10 @@ exports.create=function(req, res){
 		if(err) {
 			res.render("users/new", {user: user, errors: err.errors});
 		} else {
+// save: guarda username y password en DB
 			user.save({fields: ["username", "password"]}).then(
 				function(){
+// Crea sesión con el usuario autenticado, y redirige a /
 					req.session.user={id: user.id, username: user.username, isAdmin: user.isAdmin};
 					res.redirect(req.session.redir.toString());
 				});
@@ -66,7 +68,7 @@ exports.destroy=function(req, res, next) {
 };
 
 // GET /user/:id/edit
-exports.edit=function(req, res) {
+exports.edit = function(req, res) {
 	res.render("users/edit", {user: req.user, redir:req.session.redir.toString(), errors: []});
 	// req.user: instancia de user cargada con autoload
 };
@@ -79,9 +81,11 @@ exports.update=function(req, res, next) {
 		if(err) {
 			res.render("users/"+req.user.id, {user: user, errors: err.errors});
 		} else {
+// save: guarda username y password en DB
 			req.user.save({fields: ["username", "password"]}).then(
 				function(){
 					req.session.user={id: req.user.id, username: req.user.username, isAdmin: req.user.isAdmin};
+// redireccion HTTP a /
 					res.redirect(req.session.redir.toString());
 				});
 		}
@@ -91,10 +95,10 @@ exports.update=function(req, res, next) {
 // MW que permite acciones solamente si el usuario objeto
 // pertenece al usuario logeado o si es cuenta admin
 exports.ownershipRequired=function(req, res, next) {
-	var objUser=req.user.id;
-	var logUser=req.session.user.id;
-	var isAdmin=req.session.user.isAdmin;
-	if(isAdmin || objUser===logUser) {
+	var objUser = req.user.id;
+	var logUser = req.session.user.id;
+	var isAdmin = req.session.user.isAdmin;
+	if(isAdmin || objUser === logUser) {
 		next();
 	} else {
 		res.redirect(req.session.redir.toString());

@@ -5,7 +5,7 @@ exports.new=function(req, res) {
 	res.render("sessions/new", {errors: errors});
 }
 
-//POST /login
+//POST /login  --- Crear sesión si se autentica el usuario
 exports.create=function(req, res) {
 	var login=req.body.login;
 	var password=req.body.password;

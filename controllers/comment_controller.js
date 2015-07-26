@@ -46,19 +46,19 @@ exports.publish=function(req, res) {
 
 // MW que permite acciones solamente si el quiz objeto
 // pertenece al usuario logeado o si es cuenta admin
-exports.ownershipRequired=function(req, res, next) {
+exports.ownershipRequired = function(req, res, next) {
 	models.Quiz.find({
 		where: {id: Number(req.comment.QuizId)}
 	}).then(function(quiz){
 		if(quiz){
-			var objQuizOwner=req.quiz.UserId;
-			var logUser=req.session.user.id;
-			var isAdmin=req.session.user.isAdmin;
-			if(isAdmin || objQuizOwner===logUser) {
+			var objQuizOwner = req.quiz.UserId;
+			var logUser = req.session.user.id;
+			var isAdmin = req.session.user.isAdmin;
+			if(isAdmin || objQuizOwner === logUser) {
 				next();
 			} else {
 				res.redirect(req.session.redir.toString());
 			}
-		} else {next(new Error("No existe quizId= "+req.comment.QuizId));}
+		} else {next(new Error("No existe quizId= " + req.comment.QuizId));}
 	}).catch(function(error){next(error);});
 };
