@@ -1,11 +1,11 @@
 var models=require("../models/models.js");
-var user = {
+/*var user = {
     id: 1,
     username: "admin",
     password: "admin",
 		isAdmin: "true"
   };
-
+*/
 // Autoload :userId
 exports.load=function(req, res, next, userId) {
 	models.User.find({where: {id: Number(userId)}})
