@@ -12,7 +12,7 @@ var host     = (url[4]||null);
 var storage  = process.env.DATABASE_STORAGE;
 
 // Cargar Modelo ORM
-var Sequelize=require("sequelize");
+var Sequelize = require("sequelize");
 
 // Usar BBDD SQLite o Postgres
 var sequelize = new Sequelize(DB_name, user, pwd, {
@@ -25,11 +25,11 @@ var sequelize = new Sequelize(DB_name, user, pwd, {
 });
 
 // Importar la definición de la tabla Quiz en quiz.js
-var Quiz=sequelize.import(path.join(__dirname, "quiz"));
+var Quiz = sequelize.import(path.join(__dirname, "quiz"));
 // Importar la definición de la tabla Comment en comment.js
-var Comment=sequelize.import(path.join(__dirname, "comment"));
+var Comment = sequelize.import(path.join(__dirname, "comment"));
 // Importar la definición de la tabla User en user.js
-var User=sequelize.import(path.join(__dirname, "user"));
+var User = sequelize.import(path.join(__dirname, "user"));
 
 Comment.belongsTo(Quiz, { onDelete: 'cascade' });
 Quiz.hasMany(Comment);
@@ -38,16 +38,16 @@ Quiz.hasMany(Comment);
 Quiz.belongsTo(User);
 User.hasMany(Quiz);
 
-Favourites=sequelize.define("Favourites");
+Favourites = sequelize.define("Favourites");
 // relacion para favoritos
 User.belongsToMany(Quiz, {through: "Favourites"});
 Quiz.belongsToMany(User, {through: "Favourites"});
 
 // Exportar tablas
-exports.Quiz=Quiz;
-exports.Comment=Comment;
-exports.User=User;
-exports.Favourites=Favourites;
+exports.Quiz = Quiz;
+exports.Comment = Comment;
+exports.User = User;
+exports.Favourites = Favourites;
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().then(function() {
