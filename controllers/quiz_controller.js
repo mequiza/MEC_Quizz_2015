@@ -1,5 +1,19 @@
 var models=require("../models/models.js");
 
+// MW que permite acciones solamente si el quiz objeto
+// pertenece al usuario logeado o si es cuenta admin
+exports.ownershipRequired=function(req, res, next) {
+	var objQuizOwner=req.quiz.UserId;
+	var logUser=req.session.user.id;
+	var isAdmin=req.session.user.isAdmin;
+
+	if(isAdmin || objQuizOwner===logUser) {
+		next();
+	} else {
+		res.redirect(req.session.redir.toString());
+	}
+};
+
 // Autoload -factoriza el código si ruta incluye :quizId
 exports.load=function(req, res, next, quizId) {
 	models.Quiz.find({
@@ -69,18 +83,19 @@ exports.create=function(req, res) {
 		req.body.quiz.image = req.files.image.name;
 	}
 	var quiz = models.Quiz.build(req.body.quiz);
-	quiz.validate().then(
+	quiz
+	.validate()
+	.then(
 		function(err) {
 			if(err) {
 				res.render("quizes/new", {quiz: quiz, errors: err.errors});
-			} else {
-				// Guarda en DB los campos pregunta y respuesta de quiz
-				quiz.save({fields: ["pregunta", "respuesta", "UserId", "image"]}).then(function() {
-					res.redirect("/quizes");// Redirección a /quizes
-				});
+			} else {	// Guarda en DB los campos pregunta y respuesta de quiz
+				quiz
+				.save({fields: ["pregunta", "respuesta", "UserId", "image"]})
+				.then(function() {res.redirect("/quizes")})
 			}
 		}
-	);
+	).catch(function(error){next(error)});
 };
 
 //GET /quizes/:id/edit
@@ -96,18 +111,22 @@ exports.update=function(req, res) {
 	}
 	req.quiz.pregunta=req.body.quiz.pregunta;
 	req.quiz.respuesta=req.body.quiz.respuesta;
-	req.quiz.validate().then(
+
+	req.quiz
+	.validate()
+	.then(
 		function(err) {
 			if(err) {
 				res.render("quizes/new", {quiz: req.quiz, errors: err.errors});
 			} else {
 				// Guarda en DB los campos pregunta y respuesta de quiz
-				req.quiz.save({fields: ["pregunta", "respuesta", "image"]}).then(function() {
-					res.redirect("/quizes");// Redirección a /quizes
-				});
+				req.quiz
+				.save({fields: ["pregunta", "respuesta", "image"]})
+				.then(function() {
+					res.redirect("/quizes");});
 			}
 		}
-	);
+	).catch(function(error){next(error)});
 };
 
 //DELETE /quizes/:id
@@ -119,17 +138,4 @@ exports.destroy=function(req, res) {
 		}
 		res.redirect("/quizes");
 	}).catch(function(error){next(error)});
-};
-
-// MW que permite acciones solamente si el quiz objeto
-// pertenece al usuario logeado o si es cuenta admin
-exports.ownershipRequired=function(req, res, next) {
-	var objQuizOwner=req.quiz.UserId;
-	var logUser=req.session.user.id;
-	var isAdmin=req.session.user.isAdmin;
-	if(isAdmin || objQuizOwner===logUser) {
-		next();
-	} else {
-		res.redirect(req.session.redir.toString());
-	}
 };

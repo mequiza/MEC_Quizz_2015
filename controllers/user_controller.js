@@ -1,11 +1,19 @@
 var models=require("../models/models.js");
-/*var user = {
-    id: 1,
-    username: "admin",
-    password: "admin",
-		isAdmin: "true"
-  };
-*/
+
+// MW que permite acciones solamente si el usuario objeto
+// pertenece al usuario logeado o si es cuenta admin
+exports.ownershipRequired=function(req, res, next) {
+	var objUser = req.user.id;
+	var logUser = req.session.user.id;
+	var isAdmin = req.session.user.isAdmin;
+
+	if(isAdmin || objUser === logUser) {
+		next();
+	} else {
+		res.redirect(req.session.redir.toString());
+	}
+};
+
 // Autoload :userId
 exports.load=function(req, res, next, userId) {
 	models.User.find({where: {id: Number(userId)}})
@@ -90,17 +98,4 @@ exports.update=function(req, res, next) {
 				});
 		}
 	}).catch(function(error){next(error);});
-};
-
-// MW que permite acciones solamente si el usuario objeto
-// pertenece al usuario logeado o si es cuenta admin
-exports.ownershipRequired=function(req, res, next) {
-	var objUser = req.user.id;
-	var logUser = req.session.user.id;
-	var isAdmin = req.session.user.isAdmin;
-	if(isAdmin || objUser === logUser) {
-		next();
-	} else {
-		res.redirect(req.session.redir.toString());
-	}
 };
