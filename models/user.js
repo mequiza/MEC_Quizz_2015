@@ -40,9 +40,11 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		{
 			instanceMethods: {
-				verifyPassword: function(password) {
-					var encripted=crypto.createHmac("sha1", key)
-								.update(password).digest("hex");
+				verifyPassword: function (password) {
+					var encripted = crypto
+					                .createHmac('sha1', key)
+								          .update(password)
+													.digest('hex');
 					return encripted === this.password;
 				}
 			}
