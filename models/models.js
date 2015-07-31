@@ -52,15 +52,15 @@ exports.Favourites = Favourites;
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().then(function() {
 	User.count().then(function (count) {
-		if (count===0) { // si esta vacía se inicializa
+		if (count === 0) { // si esta vacía se inicializa
 			User.bulkCreate(
 				[{username: "admin", password:"1234", isAdmin: true},
-				{username:"pepe", password:"5678"}
+				{username:"pepe", password:"5678", isAdmin:false}
 				]
 			).then(function() {
 				console.log("Base datos, (tabla user) inicializada");
 				Quiz.count().then(function (count) {
-					if (count===0) { // si esta vacía se inicializa
+					if (count === 0) { // si esta vacía se inicializa
 						Quiz.create({ pregunta: "Capital de Italia",
 							respuesta: "Roma", UserId: 2});
 						Quiz.create({ pregunta: "Capital de Portugal",
