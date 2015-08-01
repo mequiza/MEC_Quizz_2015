@@ -26,10 +26,12 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				validate: {notEmpty: {msg: "¡Falta password!"}},
 				set: function(password) {
-					var encripted=crypto.createHmac("sha1", key)
-								.update(password).digest("hex");
+					var encripted = crypto
+					      .createHmac('sha1', key)
+								.update(password)
+								.digest('hex');
 // Evita password vacío
-					if(password === ""){encripted="";}
+					if(password === ""){encripted = "";}
 					this.setDataValue("password", encripted);
 				}
 			},
