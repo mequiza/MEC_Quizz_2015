@@ -4,11 +4,11 @@
 		<td><a href="/quizes/<%=quizes[i].id%>"><%=quizes[i].pregunta%></a></td>
 		<%if(session.user && !search) {%>
 			<%if(quizIds.indexOf(quizes[i].id)!=-1) {%>
-				<td><form method="post" action="/user/<%=session.user.id%>/favourites/<%=quizes[i].id%>?_method=delete">
+				<td><form method="post" action="/users/<%=session.user.id%>/favourites/<%=quizes[i].id%>?_method=delete">
 					<input type="image" src="/estrella.png" alt="Submit Form" width="25">
 				</form></td>
 			<%} else {%>
-				<td><form method="post" action="/user/<%=session.user.id%>/favourites/<%=quizes[i].id%>?_method=put">
+				<td><form method="post" action="/users/<%=session.user.id%>/favourites/<%=quizes[i].id%>?_method=put">
 					<input type="image" src="/estrellaG.png" alt="Submit Form" width="25">
 				</form></td>
 			<%}%>

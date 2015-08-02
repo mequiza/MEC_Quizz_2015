@@ -50,7 +50,8 @@ exports.index=function(req, res, next) {
 		options.where = {UserId: req.user.id};
 	}
 	if(req.query.search) {
-		models.Quiz.findAll({where: ["pregunta like ?", "%"+req.query.search.replace(/ /g, "%")+"%"], order: "pregunta"}).then(function(quizes) {
+		models.Quiz.findAll({where: ["pregunta like ?", "%"+req.query.search.replace(/ /g, "%")+"%"], order: "pregunta"})
+		  .then(function(quizes) {
 			res.render('quizes/index', {quizes: quizes, quizIds: [], search:true, errors: []});
 		}).catch(function(error) {next(error);});
 	} else if(req.session.user) {

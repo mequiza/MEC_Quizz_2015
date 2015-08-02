@@ -22,12 +22,12 @@ router.post("/login", sessionController.create); // crear sessión
 router.get("/logout", sessionController.destroy); // destruye sessión
 
 // Definición de rutas de usuarios
-router.get("/user", userController.new); // form sign up
-router.post("/user", userController.create); // crear user
-router.get("/user/:userId(\\d+)/edit", sessionController.loginRequired, userController.ownershipRequired, userController.edit);
-router.put("/user/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.update);
-router.delete("/user/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.destroy);
-router.get("/user/:userId(\\d+)/quizes", quizController.index);
+router.get("/users", userController.new); // form sign up
+router.post("/users", userController.create); // crear user
+router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, userController.ownershipRequired, userController.edit);
+router.put("/users/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.update);
+router.delete("/users/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.destroy);
+router.get("/users/:userId(\\d+)/quizes", quizController.index);
 
 // Definición de rutas de /quizes
 router.get('/quizes', quizController.index);
