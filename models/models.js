@@ -55,20 +55,20 @@ sequelize.sync().then(function() {
 		if (count === 0) { // si esta vacía se inicializa
 			User.bulkCreate(
 				[{username: "admin", password:"1234", isAdmin: true},
-				{username:"pepe", password:"5678", isAdmin:false}
+				{username:"pepe", password:"5678"}
 				]
 			).then(function() {
 				console.log("Base datos, (tabla user) inicializada");
 				Quiz.count().then(function (count) {
 					if (count === 0) { // si esta vacía se inicializa
-						Quiz.create({ pregunta: "Capital de Italia",
-							respuesta: "Roma", UserId: 2});
-						Quiz.create({ pregunta: "Capital de Portugal",
-							respuesta: "Lisboa", UserId:2})
-						.then(function() {console.log("Base de datos, tabla quiz inicializada")});
-					}
+						Quiz.bulkCreate(
+							[{ pregunta: "Capital de Italia", respuesta: "Roma", UserId: 2},
+							 { pregunta: "Capital de Portugal", respuesta: "Lisboa", UserId:2}
+						  ])
+						.then(function() {console.log("Base de datos, (tabla quiz) inicializada")});
+					};
 				});
 			});
-		}
+		};
 	});
 });
