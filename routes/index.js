@@ -25,28 +25,27 @@ router.get("/logout", sessionController.destroy); // destruye sessión
 router.get("/users", userController.new); // form sign up
 router.post("/users", userController.create); // crear user
 router.get("/users/:userId(\\d+)/edit", sessionController.loginRequired, userController.ownershipRequired, userController.edit);
-router.put("/users/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.update);
-router.delete("/users/:userId(\\d+)", sessionController.loginRequired, userController.ownershipRequired, userController.destroy);
+router.put("/users/:userId(\\d+)",      sessionController.loginRequired, userController.ownershipRequired, userController.update);
+router.delete("/users/:userId(\\d+)",   sessionController.loginRequired, userController.ownershipRequired, userController.destroy);
 router.get("/users/:userId(\\d+)/quizes", quizController.index);
 
 // Definición de rutas de /quizes
-router.get('/quizes', quizController.index);
-router.get('/quizes/:quizId(\\d+)', quizController.show);
+router.get('/quizes',                      quizController.index);
+router.get('/quizes/:quizId(\\d+)',        quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
-router.get("/quizes/new", sessionController.loginRequired, quizController.new);
-router.post("/quizes/create", sessionController.loginRequired,
+router.get("/quizes/new",                  sessionController.loginRequired, quizController.new);
+router.post("/quizes/create",              sessionController.loginRequired,
 	multer({dest:"./public/media/"}),
    quizController.create);
-router.get("/quizes/:quizId(\\d+)/edit", sessionController.loginRequired, quizController.ownershipRequired, quizController.edit);
-router.put("/quizes/:quizId(\\d+)", sessionController.loginRequired,
-  quizController.ownershipRequired,
+router.get("/quizes/:quizId(\\d+)/edit",   sessionController.loginRequired, quizController.ownershipRequired, quizController.edit);
+router.put("/quizes/:quizId(\\d+)",        sessionController.loginRequired, quizController.ownershipRequired,
 	multer({dest:"./public/media/"}),
   quizController.update);
-router.delete("/quizes/:quizId(\\d+)", sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy);
+router.delete("/quizes/:quizId(\\d+)",     sessionController.loginRequired, quizController.ownershipRequired, quizController.destroy);
 
 // Definición de rutas de comentarios
 router.get("/quizes/:quizId(\\d+)/comments/new", commentController.new);
-router.post("/quizes/:quizId(\\d+)/comments", commentController.create);
+router.post("/quizes/:quizId(\\d+)/comments",    commentController.create);
 router.get("/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish",
 	sessionController.loginRequired, commentController.ownershipRequired, commentController.publish);
 
