@@ -44,10 +44,13 @@ exports.ownershipRequired=function(req, res, next) {
 };
 
 // GET /user
-exports.new=function(req, res) {
-	var user=models.User.build( // crea objeto user
-		{username: "", password: ""});
-	res.render("users/new", {user: user, redir:req.session.redir.toString(), errors: []});
+exports.new = function(req, res) {
+	var user = models.User.build( // crea objeto user
+		{username: "", password: ""}
+		);
+	res.render('users/new', {user: user,
+//		 redir:req.session.redir.toString(),
+		errors: []});
 };
 
 // POST /user

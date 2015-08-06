@@ -1,4 +1,4 @@
-var crypto = require("crypto");
+var crypto = require('crypto');
 var key = process.env.PASSWORD_ENCRYPTION_KEY;
 module.exports = function(sequelize, DataTypes) {
 	var User = sequelize.define(
@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
 						User.find({where: {username:value}})
 						.then(function (user) {
 							if(user && self.id !== user.id){
-								return next("Username ya utilizado");
+								return next('Username ya utilizado');
 							}
 							return next();
 						}).catch(function(err){return next(err);});
@@ -31,8 +31,8 @@ module.exports = function(sequelize, DataTypes) {
 								.update(password)
 								.digest('hex');
 // Evita password vacío
-					if(password === ""){encripted = "";}
-					this.setDataValue("password", encripted);
+					if(password === ''){encripted = '';}
+					this.setDataValue('password', encripted);
 				}
 			},
 			isAdmin: {
