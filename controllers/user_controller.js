@@ -1,30 +1,15 @@
 var models=require("../models/models.js");
 
-// MW que permite acciones solamente si el usuario objeto
-// pertenece al usuario logeado o si es cuenta admin
-exports.ownershipRequired=function(req, res, next) {
-	var objUser = req.user.id;
-	var logUser = req.session.user.id;
-	var isAdmin = req.session.user.isAdmin;
-
-	if(isAdmin || objUser === logUser) {
-		next();
-	} else {
-		res.redirect(req.session.redir.toString());
-	}
-};
-
 // Autoload :userId
-exports.load=function(req, res, next, userId) {
-	models.User.find({where: {id: Number(userId)}})
+exports.load = function(req, res, next, userId) {
+	models.User.find({ where: {id: Number(userId)}})
 		.then(function(user){
 			if(user) {
 				req.user = user;
 				next();
-			} else {
-				next(new Error("No existe userId= "+userId));
-			}
-		}).catch(function(error){next(error);});
+			} else { next(new Error("No existe userId = " + userId))}
+		}
+	).catch(function(error){next(error)});
 };
 
 // Comprueba si el usuario está registrado en users
@@ -44,6 +29,20 @@ exports.autenticar = function(login, password, callback) {
 	}).catch(function(error){callback(error)});
 };
 
+// MW que permite acciones solamente si el usuario objeto
+// pertenece al usuario logeado o si es cuenta admin
+exports.ownershipRequired=function(req, res, next) {
+	var objUser = req.user.id;
+	var logUser = req.session.user.id;
+	var isAdmin = req.session.user.isAdmin;
+
+	if(isAdmin || objUser === logUser) {
+		next();
+	} else {
+		res.redirect(req.session.redir.toString());
+	}
+};
+
 // GET /user
 exports.new=function(req, res) {
 	var user=models.User.build( // crea objeto user
@@ -52,17 +51,21 @@ exports.new=function(req, res) {
 };
 
 // POST /user
-exports.create=function(req, res){
-	var user=models.User.build(req.body.user);
-	user.validate().then(function(err) {
+exports.create = function(req, res){
+	var user = models.User.build(req.body.user);
+	user
+	.validate()
+	.then(
+		function(err) {
 		if(err) {
 			res.render("users/new", {user: user, errors: err.errors});
 		} else {
 // save: guarda username y password en DB
-			user.save({fields: ["username", "password"]}).then(
-				function(){
+			user
+			.save({fields: ["username", "password"]})
+			.then(function(){
 // Crea sesión con el usuario autenticado, y redirige a /
-					req.session.user={id: user.id, username: user.username, isAdmin: user.isAdmin};
+					req.session.user = {id: user.id, username: user.username, isAdmin: user.isAdmin};
 					res.redirect(req.session.redir.toString());
 				});
 		}
@@ -86,18 +89,25 @@ exports.edit = function(req, res) {
 
 // PUT /user/:id
 exports.update=function(req, res, next) {
-	req.user.username=req.body.user.username;
-	req.user.password=req.body.user.password;
-	req.user.validate().then(function(err) {
+	req.user.username = req.body.user.username;
+	req.user.password = req.body.user.password;
+
+	req.user
+	.validate()
+	.then(
+		function(err) {
 		if(err) {
-			res.render("users/"+req.user.id, {user: user, errors: err.errors});
+			res.render("users/" + req.user.id, {user: user, errors: err.errors});
 		} else {
 // save: guarda username y password en DB
-			req.user.save({fields: ["username", "password"]}).then(
-				function(){
-					req.session.user={id: req.user.id, username: req.user.username, isAdmin: req.user.isAdmin};
+			req.user
+			.save({fields: ["username", "password"]})
+			.then( function(){
+//				req.session.user={id: req.user.id, username: req.user.username, isAdmin: req.user.isAdmin};
 // redireccion HTTP a /
-					res.redirect(req.session.redir.toString());
+					res.redirect (
+//						req.session.redir.toString());
+'/')
 				});
 		}
 	}).catch(function(error){next(error);});
