@@ -1,9 +1,12 @@
-var models=require("../models/models.js");
+var models = require('../models/models.js');
 
 // Autoload :userId
 exports.load = function(req, res, next, userId) {
-	models.User.find({ where: {id: Number(userId)}})
-		.then(function(user){
+	models.User.find({
+		 where: {
+			id: Number(userId)
+		}
+	}).then(function(user){
 			if(user) {
 				req.user = user;
 				next();
@@ -25,13 +28,13 @@ exports.autenticar = function(login, password, callback) {
 				callback(null, user);
 			}
 			else{callback(new Error('Password erróneo'));}
-		} else {callback(new Error('No existe user = ' + login));}
+		} else {callback(new Error('No existe user = ' + login))}
 	}).catch(function(error){callback(error)});
 };
 
 // MW que permite acciones solamente si el usuario objeto
 // pertenece al usuario logeado o si es cuenta admin
-exports.ownershipRequired=function(req, res, next) {
+exports.ownershipRequired = function(req, res, next) {
 	var objUser = req.user.id;
 	var logUser = req.session.user.id;
 	var isAdmin = req.session.user.isAdmin;
@@ -39,7 +42,10 @@ exports.ownershipRequired=function(req, res, next) {
 	if(isAdmin || objUser === logUser) {
 		next();
 	} else {
-		res.redirect(req.session.redir.toString());
+		res.redirect(
+//			req.session.redir.toString()
+			  '/'
+			);
 	}
 };
 
@@ -61,7 +67,7 @@ exports.create = function(req, res){
 	.then(
 		function(err) {
 		if(err) {
-			res.render("users/new", {user: user, errors: err.errors});
+			res.render('users/new', {user: user, errors: err.errors});
 		} else {
 // save: guarda username y password en DB
 			user
@@ -69,29 +75,37 @@ exports.create = function(req, res){
 			.then(function(){
 // Crea sesión con el usuario autenticado, y redirige a /
 					req.session.user = {id: user.id, username: user.username, isAdmin: user.isAdmin};
-					res.redirect(req.session.redir.toString());
+					res.redirect(
+						req.session.redir.toString()
+						'/'
+						);
 				});
 		}
-	}).catch(function(error){next(error);});
+	}).catch(function(error){next(error)});
 };
 
 // DELETE /user/:id
-exports.destroy=function(req, res, next) {
+exports.destroy = function(req, res, next) {
 	req.user.destroy().then(function(){
 		// borra la sesión y redirige
 		delete req.session.user;
-		res.redirect(req.session.redir.toString());
+		res.redirect(
+//			req.session.redir.toString()
+			'/'
+			);
 	}).catch(function(error){next(error)});
 };
 
 // GET /user/:id/edit
 exports.edit = function(req, res) {
-	res.render("users/edit", {user: req.user, redir:req.session.redir.toString(), errors: []});
+	res.render('users/edit', {user: req.user,
+//		 redir:req.session.redir.toString(),
+		errors: []});
 	// req.user: instancia de user cargada con autoload
 };
 
 // PUT /user/:id
-exports.update=function(req, res, next) {
+exports.update = function(req, res, next) {
 	req.user.username = req.body.user.username;
 	req.user.password = req.body.user.password;
 
@@ -100,7 +114,7 @@ exports.update=function(req, res, next) {
 	.then(
 		function(err) {
 		if(err) {
-			res.render("users/" + req.user.id, {user: user, errors: err.errors});
+			res.render('users/' + req.user.id, {user: req.user, errors: err.errors});
 		} else {
 // save: guarda username y password en DB
 			req.user
