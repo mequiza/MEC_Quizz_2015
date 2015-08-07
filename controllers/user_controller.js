@@ -76,7 +76,7 @@ exports.create = function(req, res){
 // Crea sesión con el usuario autenticado, y redirige a /
 					req.session.user = {id: user.id, username: user.username, isAdmin: user.isAdmin};
 					res.redirect(
-						req.session.redir.toString()
+//						req.session.redir.toString()
 						'/'
 						);
 				});
