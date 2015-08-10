@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
 			validate:{notEmpty: {msg:"¡Falta Respuesta!"}}
 		},
 		image: {
-			type:DataTypes.STRING
+			type:DataTypes.STRING.BINARY
 		}
 	});
 }

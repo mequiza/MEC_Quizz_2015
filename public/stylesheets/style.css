@@ -17,3 +17,5 @@ nav span              { margin: 0px 10px 0px 0px;
 #ErrorMsgs            { color: #f61; font-size: smaler}
 .right                {	float:right;}
 .quiz_img             {	float: left; height: 150px;}
+ul 						{ padding-left: 5%;
+						  text-align: left;}
